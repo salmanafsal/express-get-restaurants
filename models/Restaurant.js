@@ -7,4 +7,5 @@ const Restaurant = db.define("restaurants", {
     cuisine: Sequelize.STRING
 })
 
+
 module.exports = Restaurant;
