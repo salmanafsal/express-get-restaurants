@@ -14,7 +14,7 @@ try {
 
 app.listen(PORT, () => {
     db.sync();
-    console.log(`Listening at http://localhost:${PORT}/whatever`)
+    console.log(`Listening at http://localhost:${PORT}/restaurants`)
 
     
 })
