@@ -1,9 +1,33 @@
 const Restaurant = require('../models/index.js')
 const express = require('express');
 const router = express.Router();
+router.use(express.json());
+const { check, validationResult } = require("express-validator");
 
 
-router.post('/', async (req, res) => {
+router.post('/',
+  [
+    check("name", "InvalidName")
+      .notEmpty()
+      .withMessage("Name cannot be empty")
+      .custom((value) => {
+        if (value.trim().length === 0) {
+          throw new Error("Name cannot be just whitespace");
+        }
+        return true; // Value is valid
+      }), // Check if the name is not just whitespace
+      
+    check("location", "InvalidLocation").notEmpty(),
+    check("cuisine", "InvalidCuisine").notEmpty(),
+  ],
+  
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      // Return errors if validation fails
+      return res.status(400).json({ error: errors.array() });
+    }
+
     try {
       const { name, location, cuisine } = req.body;
       const newRestaurant = await Restaurant.create({ name, location, cuisine });
@@ -11,7 +35,8 @@ router.post('/', async (req, res) => {
     } catch (error) {
       res.status(400).json({ error: 'Unable to create restaurant', details: error.message });
     }
-  });
+  }
+);
 
   router.get('/', async (req, res) => {
     try {
