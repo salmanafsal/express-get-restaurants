@@ -2,24 +2,16 @@ const Restaurant = require('../models/index.js')
 const express = require('express');
 const router = express.Router();
 router.use(express.json());
+
 const { check, validationResult } = require("express-validator");
 
 
 router.post('/',
-  [
-    check("name", "InvalidName")
-      .notEmpty()
-      .withMessage("Name cannot be empty")
-      .custom((value) => {
-        if (value.trim().length === 0) {
-          throw new Error("Name cannot be just whitespace");
-        }
-        return true; // Value is valid
-      }), // Check if the name is not just whitespace
-      
-    check("location", "InvalidLocation").notEmpty(),
-    check("cuisine", "InvalidCuisine").notEmpty(),
-  ],
+[
+    check("name").trim().notEmpty().withMessage('Name is required and cannot be empty or whitespace'),
+    check('location').trim().notEmpty().withMessage('Location is required and cannot be empty or whitespace'),
+    check('cuisine').trim().notEmpty().withMessage('Cuisine is required and cannot be empty or whitespace')
+],
   
   async (req, res) => {
     const errors = validationResult(req);

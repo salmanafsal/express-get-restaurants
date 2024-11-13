@@ -1,15 +1,21 @@
 const express = require("express");
 const app = express();
-const Restaurant = require("../models/index")
-const db = require("../db/connection");
+/*const db = require("../db/connection");*/
+const router = require('../routes/restaurants');
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded())
+app.use('/restaurants', router);
+
+
+module.exports = app;
+
 //TODO: Create your GET Request Route Below: 
 
-app.get("/restaurants", async (req, res) => {
+/*app.get("/restaurants", async (req, res) => {
     const rest = await Restaurant.findAll({});
     /*res.json(rest);*/
-    res.json(rest);
+  /*  res.json(rest);
 })
 
 app.get('/restaurants/:id', async (req, res) => {
@@ -77,4 +83,4 @@ app.delete("/restaurants/:id", async (req, res) => {
 
 
 
-module.exports = app;
+module.exports = app;*/
